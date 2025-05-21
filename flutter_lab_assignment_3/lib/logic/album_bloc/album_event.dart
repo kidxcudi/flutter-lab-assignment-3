@@ -1,3 +1,10 @@
-abstract class AlbumEvent {}
+import 'package:equatable/equatable.dart';
 
-class FetchAlbums extends AlbumEvent {}
+abstract class AlbumEvent extends Equatable {
+  const AlbumEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchAlbumsEvent extends AlbumEvent {}

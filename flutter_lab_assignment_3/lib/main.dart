@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+import 'app/router.dart';
 import 'data/api/album_remote_data_source.dart';
 import 'data/repositories/album_repository_impl.dart';
 import 'domain/usecases/get_albums_with_photos.dart';
 import 'logic/album_bloc/album_bloc.dart';
-import 'logic/album_bloc/album_event.dart';
-import 'logic/album_bloc/album_state.dart';
-import 'presentation/screens/album_list_screen.dart';
 
 void main() {
   final albumRepository = AlbumRepositoryImpl(AlbumRemoteDataSource(http.Client()));
@@ -31,12 +29,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Album App',
+      routerConfig: router,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      home: const AlbumListScreen(),
     );
   }
 }
