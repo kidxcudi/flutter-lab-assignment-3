@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../domain/entities/album.dart';
+import '../../core/utils/constants.dart';
 import '../../logic/album_bloc/album_bloc.dart';
 import '../../logic/album_bloc/album_event.dart';
 import '../../logic/album_bloc/album_state.dart';
@@ -24,13 +24,17 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Albums')),
+      appBar: AppBar(title: const Text(AppStrings.appTitle)),
       body: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
-          if (state is AlbumLoadingState) {
+          if (state is AlbumLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is AlbumLoadedState) {
+          } else if (state is AlbumLoaded) {
             final albums = state.albums;
+
+            if (albums.isEmpty) {
+              return const Center(child: Text(AppStrings.noAlbumsFound));
+            }
 
             return ListView.builder(
               itemCount: albums.length,
@@ -47,13 +51,12 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
                       : const SizedBox(width: 50, height: 50),
                   title: Text(album.title),
                   onTap: () {
-                    // Navigate using GoRouter, pass Album as extra
-                    context.push('/album', extra: album);
+                    context.push(AppStrings.albumDetailRoute, extra: album);
                   },
                 );
               },
             );
-          } else if (state is AlbumErrorState) {
+          } else if (state is AlbumError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +67,7 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
                     onPressed: () {
                       context.read<AlbumBloc>().add(FetchAlbumsEvent());
                     },
-                    child: const Text('Retry'),
+                    child: const Text(AppStrings.retry),
                   ),
                 ],
               ),
