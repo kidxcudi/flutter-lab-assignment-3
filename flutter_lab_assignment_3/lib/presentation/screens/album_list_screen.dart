@@ -40,16 +40,16 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               itemCount: albums.length,
               itemBuilder: (context, index) {
                 final album = albums[index];
                 final photo = album.photos.isNotEmpty ? album.photos.first : null;
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Card(
-                    elevation: 2,
+                    elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -59,7 +59,7 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
                         context.push(AppStrings.albumDetailRoute, extra: album);
                       },
                       child: SizedBox(
-                        height: 100, // fixed height for all cards
+                        height: 100, 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -84,10 +84,10 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
                                     color: Colors.grey.shade300,
                                     child: const Icon(Icons.image_not_supported),
                                   ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -124,22 +124,34 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
               },
             );
           } else if (state is AlbumError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(state.message),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<AlbumBloc>().add(FetchAlbumsEvent());
-                    },
-                    child: const Text(AppStrings.retry),
-                  ),
-                ],
-              ),
-            );
-          }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.wifi_off, size: 48, color: Colors.grey.shade600),
+                    const SizedBox(height: 12),
+                    Text(
+                      'No Internet Connection',
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Please check your connection and try again.',
+                      style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.refresh),
+                      label: const Text(AppStrings.retry),
+                      onPressed: () {
+                        context.read<AlbumBloc>().add(FetchAlbumsEvent());
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+
 
           return const SizedBox.shrink();
         },
