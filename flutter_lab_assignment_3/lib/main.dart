@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Album App',
       routerConfig: router,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,

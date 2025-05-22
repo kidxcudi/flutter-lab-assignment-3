@@ -24,7 +24,10 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.appTitle)),
+      appBar: AppBar(
+        title: const Text('Albums', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Color(0xFFF5F5DC),
+      ),
       body: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
           if (state is AlbumLoading) {
@@ -37,22 +40,86 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
             }
 
             return ListView.builder(
+              padding: const EdgeInsets.all(12),
               itemCount: albums.length,
               itemBuilder: (context, index) {
                 final album = albums[index];
-                return ListTile(
-                  leading: album.photos.isNotEmpty
-                      ? Image.network(
-                          album.photos.first.thumbnailUrl,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        )
-                      : const SizedBox(width: 50, height: 50),
-                  title: Text(album.title),
-                  onTap: () {
-                    context.push(AppStrings.albumDetailRoute, extra: album);
-                  },
+                final photo = album.photos.isNotEmpty ? album.photos.first : null;
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: InkWell(
+                      onTap: () {
+                        context.push(AppStrings.albumDetailRoute, extra: album);
+                      },
+                      child: SizedBox(
+                        height: 100, // fixed height for all cards
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            photo != null
+                                ? Image.network(
+                                    photo.thumbnailUrl,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 100,
+                                        height: 100,
+                                        color: Colors.grey.shade300,
+                                        child: const Icon(Icons.broken_image),
+                                      );
+                                    },
+                                  )
+                                : Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.grey.shade300,
+                                    child: const Icon(Icons.image_not_supported),
+                                  ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      album.title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      'by @user${album.userId} · Album ${album.id} · ${album.photos.length} photos',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               },
             );
