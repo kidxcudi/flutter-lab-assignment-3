@@ -40,13 +40,15 @@ class AlbumDetailScreen extends StatelessWidget {
                             ),
                       ),
                       const SizedBox(width: 8),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.amber.shade600,
-                          shape: BoxShape.circle,
-                        ),
+                      Expanded(
+                        child: Container(
+                            width: double.infinity,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF252525),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                      ),
                       ),
                     ],
                   ),

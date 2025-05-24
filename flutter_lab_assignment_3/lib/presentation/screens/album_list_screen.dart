@@ -33,7 +33,7 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
       body: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
           if (state is AlbumLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Color(0xFF252525)));
           } else if (state is AlbumLoaded) {
             final albums = state.albums;
 
@@ -149,6 +149,10 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
                       onPressed: () {
                         context.read<AlbumBloc>().add(FetchAlbumsEvent());
                       },
+                      style: ElevatedButton.styleFrom(
+                      foregroundColor: Color(0xFF252525),  
+                      backgroundColor: Colors.white, 
+                      ),
                     ),
                   ],
                 ),
