@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-import 'app/router.dart';
+import 'navigation/router.dart';
 import 'data/api/album_remote_data_source.dart';
 import 'data/repositories/album_repository_impl.dart';
 import 'domain/usecases/get_albums_with_photos.dart';

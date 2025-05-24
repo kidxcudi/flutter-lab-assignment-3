@@ -26,8 +26,10 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Albums', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Color(0xFFF5F5DC),
+        backgroundColor: Color(0xFF252525),
+        foregroundColor: Colors.white,
       ),
+      backgroundColor: Color(0xFFF1F3F7),
       body: BlocBuilder<AlbumBloc, AlbumState>(
         builder: (context, state) {
           if (state is AlbumLoading) {
@@ -40,20 +42,21 @@ class _AlbumListScreenState extends State<AlbumListScreen> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
               itemCount: albums.length,
               itemBuilder: (context, index) {
                 final album = albums[index];
                 final photo = album.photos.isNotEmpty ? album.photos.first : null;
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  padding: const EdgeInsets.symmetric(vertical: 1.0),
                   child: Card(
                     elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    color: Colors.white,
                     clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                    ),
                     child: InkWell(
                       onTap: () {
                         context.push(AppStrings.albumDetailRoute, extra: album);
